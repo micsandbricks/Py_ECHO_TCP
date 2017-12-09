@@ -30,8 +30,7 @@ def client_socket_function(client_socket):
         msg_decoded_and_stripped = msg_decoded.rstrip('\r\n')
         if msg_decoded_and_stripped == 'test':
             client_socket.send(b'You tested the server\r\n')
-        client_socket.send(b'Message received\r\n')
-        client_socket.send(msg)
+        client_socket.send(b'Message received: ' + msg + b'\0')
 
     if connection_terminated:
         client_socket.close()
@@ -50,6 +49,8 @@ def main():
     serversocket.bind((HOST_NAME, SERVER_PORT))
     # Setup the socket to handle at most 5 connections.
     serversocket.listen(5)
+    
+    print "Serving on " + HOST_NAME + ":" + str(SERVER_PORT)
 
     # The server loop, connections are accepted.
     while 1:
